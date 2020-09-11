@@ -15,9 +15,23 @@
 <script>
 import HeaderAuth from '../components/HeaderAuth';
 export default {
- components: {
-   HeaderAuth
- } 
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+  components: {
+    HeaderAuth
+  },
+  methods: {
+    auth() {
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password
+      });
+    }
+  }
 };
 </script>
 
