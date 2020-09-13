@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import ShareMessage from '../components/ShareMassage';
+import ShareMessage from '../components/ShareMessage';
 export default {
   components: {
     ShareMessage
