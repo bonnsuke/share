@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
   data() {
     return {
@@ -20,17 +20,17 @@ export default {
     send() {
       if (this.share === "") {
         alert("シェアする内容を入力してください");
-      }　else {
+      } else {
         axios
           .post("herokuのURL/api/shares", {
-            uaer_id: this.$store.state.user.id,
+            user_id: this.$store.state.user.id,
             share: this.share,
           })
-          ,then((response) => {
+          .then((response) => {
             console.log(response);
             alert("シェアしました");
-            this.$share = "";
-            this.router.go({
+            this.share = "";
+            this.$router.go({
               path: this.$router.currentRoute.path,
               force: true,
             });
@@ -40,6 +40,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .share {
   margin: 15px;
