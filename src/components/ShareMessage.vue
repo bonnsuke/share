@@ -19,7 +19,7 @@ export default {
   methods: {
     send() {
       if (this.share === "") {
-        alert("シェアする内容を入力してください")；
+        alert("シェアする内容を入力してください");
       }　else {
         axios
           .post("herokuのURL/api/shares", {
