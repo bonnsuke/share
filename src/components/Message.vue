@@ -1,32 +1,32 @@
 <template>
   <div>
-    <div v-for="(value,key,index) in shares" :key="index">
+    <div v-for="(value, key, index) in shares" :key="index">
       <div class="message">
         <div class="flex">
-          <p class="name">{{value.name}}</p>
-          <img class="icon" src="../assets/heart.png" />
-          <p class="number">{{value.like.length}}</p>
+          <p class="name">{{ value.name }}</p>
+          <img class="icon" src="../assets/heart.png" @click="fav(key)" alt />
+          <p class="number">{{ value.like.length }}</p>
           <img
-           class="icon" 
-           src="../assets/cross.png"
-           @click="del(key)"
-           alt
-           v-if="path && profile"
+            class="icon"
+            src="../assets/cross.png"
+            @click="del(key)"
+            alt
+            v-if="path && profile"
           />
           <img
-           class="icon" 
-           src="../assets/detail.png" 
-           @click="
-             $router.push({
-               path: '/detail/' + value.item.id,
-               params: { id: value.item.id },
-             })
+            class="icon detail"
+            src="../assets/detail.png"
+            @click="
+              $router.push({
+                path: '/detail/' + value.item.id,
+                params: { id: value.item.id },
+              })
             "
             alt
             v-if="profile"
           />
         </div>
-        <p class="text">{{value.share}}</p>
+        <p class="text">{{ value.item.share }}</p>
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     fav(index) {
-      let result = this.shares[index].like.some((value) =>{
+      let result = this.shares[index].like.some((value) => {
         return value.user_id == this.$store.state.user.id;
       });
       if (result) {
@@ -56,7 +56,7 @@ export default {
                 data: {
                   share_id: this.shares[index].item.id,
                   user_id: this.$store.state.user.id,
-                },               
+                },
               })
               .then((response) => {
                 console.log(response);
@@ -67,10 +67,10 @@ export default {
               });
           }
         });
-      } eles {
+      } else {
         axios
-          .post("herokuのURL api/like", {
-            share_id: this.share[index].item.id,
+          .post("herokuのURL/api/like", {
+            share_id: this.shares[index].item.id,
             user_id: this.$store.state.user.id,
           })
           .then((response) => {
@@ -85,7 +85,7 @@ export default {
     del(index) {
       axios
         .delete(
-          "herokuのURL/api/share/" +
+          "herokuのURL/api/shares/" +
             this.shares[index].item.id
         )
         .then((response) => {
@@ -99,27 +99,27 @@ export default {
     async getShares() {
       let data = [];
       let shares = await axios.get(
-        "herokuのURL api／shares"
+        "herokuのURL/api/shares"
       );
-      for (let i = 0; i < shares.data.length; i++) {
+      for (let i = 0; i < shares.data.data.length; i++) {
         await axios
-        .get(
-          "herokuのURL/api?shares" +
-            shares.data.data[i].id
-        )
-        .then((response) => {
-          if (this.$route.name == "profile") {
-            if (response.data.item.user_id == this.sstore.state.user.id) {
+          .get(
+            "herokuのURL/api/shares/" +
+              shares.data.data[i].id
+          )
+          .then((response) => {
+            if (this.$route.name == "profile") {
+              if (response.data.item.user_id == this.$store.state.user.id) {
+                data.push(response.data);
+              }
+            } else if (this.$route.name == "detail") {
+              if (response.data.item.id == this.id) {
+                data.push(response.data);
+              }
+            } else {
               data.push(response.data);
             }
-          } else if (this.$route.name == "detail") {
-            if (response.data.item.id == this.id) {
-              data.push(response.data);
-            }
-          } else {
-            data.push(response.data);
-          }
-        });
+          });
       }
       this.shares = data;
       console.log(this.shares);
@@ -130,7 +130,7 @@ export default {
       this.path = false;
     }
     if (this.$route.name === "detail") {
-      this.profile = fales;
+      this.profile = false;
     }
     this.getShares();
   },
@@ -145,7 +145,7 @@ export default {
   width: 25px;
   height: 25px;
 }
-.datail {
+.detail {
   margin-left: 50px;
 }
 .message {

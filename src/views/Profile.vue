@@ -9,13 +9,13 @@
       </div>
       <div class="profile">
         <div class="flex-profile">
-          <p class="profile-name">{{name}}</p>
+          <p class="profile-name">{{ name }}</p>
           <div @click="edit">
             <button>変更する</button>
           </div>
         </div>
-        <p class="text" v-if="active">{{profile}}</p>
-        <input type="text" v-model="profile" v-elase />
+        <p class="text" v-if="active">{{ profile }}</p>
+        <input type="text" v-model="profile" v-else />
       </div>
       <Message />
     </div>
@@ -23,15 +23,15 @@
 </template>
 
 <script>
-import SideNavi from '../components/SideNavi';
-import Message from '../components/Message';
+import SideNavi from "../components/SideNavi";
+import Message from "../components/Message";
 import axios from "axios";
 export default {
-  date() {
+  data() {
     return {
       active: true,
-      name: "太郎",
-      profile: "私は太郎です"
+      name: this.$store.state.user.name,
+      profile: this.$store.state.user.profile,
     };
   },
   methods: {
@@ -54,7 +54,7 @@ export default {
   },
   components: {
     SideNavi,
-    Message
+    Message,
   },
 };
 </script>
@@ -101,5 +101,8 @@ button {
   border-radius: 25px;
   display: block;
   margin: 0 0 0 auto;
+}
+input {
+  color: black;
 }
 </style>

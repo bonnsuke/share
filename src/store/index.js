@@ -1,11 +1,10 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
-import axios from 'axios';
-import router from '../router/index';
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import axios from "axios";
+import router from "../router/index";
 
-
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
@@ -30,7 +29,7 @@ export default new Vuex.Store({
   actions: {
     async login({ commit }, { email, password }) {
       let responseLogin = await axios.post(
-        "herokuのURL api/login",
+        "herokuのURL/api/login",
         {
           email: email,
           password: password,
@@ -53,7 +52,7 @@ export default new Vuex.Store({
         .post("herokuのURL/api/logout", {
           auth: this.state.auth,
         })
-        .then((pesponse) => {
+        .then((response) => {
           console.log(response);
           commit("logout", response.data.auth);
           router.replace("/");
@@ -64,6 +63,6 @@ export default new Vuex.Store({
     },
     changeUserData({ commit }, { profile }) {
       commit("changeUserData", profile);
-    },   
+    },
   },
-})；
+});
